@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { TypeormEntityBase } from '@vendor/infrastructure/database/typeorm.entity.base';
 

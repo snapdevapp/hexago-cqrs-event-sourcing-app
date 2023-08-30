@@ -1,5 +1,5 @@
 import { Result } from '@badrap/result';
-import { UnitOfWorkPort } from '@modules/onboarding/core/application/ports';
+import { UnitOfWorkPort } from '@src/onboarding/core/application/ports';
 import { CommandHandler } from '@nestjs/cqrs';
 import { ApplicationServicePort } from '@vendor/application/application.service';
 import { ID } from '@vendor/domain/value-objects/id.value-object';

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
-import OnboardingModule from './modules/onboarding/onboarding.module';
+import OnboardingModule from './onboarding/onboarding.module';
 
 @Module({
   imports: [

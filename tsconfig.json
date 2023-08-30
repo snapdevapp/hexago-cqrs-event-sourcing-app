@@ -20,7 +20,7 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "paths": {
-      "@modules/*": ["src/modules/*"],
+      "@onboarding/*": ["src/onboarding/*"],
       "@vendor/*": ["src/@vendor/*"],
       "@src/*": ["src/*"]
     },

@@ -4,7 +4,7 @@ import { Injectable, Logger as NestLogger } from '@nestjs/common';
 @Injectable()
 export class LoggerAdapter extends NestLogger implements LoggerPort {
   setContext(context: string): void {
-    throw new Error('Method not implemented.');
+    super.debug(context);
   }
 
   error(message: unknown, trace?: string, context?: string): void {

@@ -1,7 +1,7 @@
 import { ExecuteSendWelcomeEmailHanlder } from './interface/commands/execute-send-welcome-email.command';
 import { UnitOfWorkPort } from './core/application/ports';
 import { ClientRepository } from './infrastructure/persistence/repositories';
-import { UnitOfWork } from './infrastructure/persistence/repositories/uow';
+import { UnitOfWork } from './infrastructure/persistence/repositories/unit-of-work';
 import { EventBus } from '@nestjs/cqrs';
 import { LoggerAdapter } from '@vendor/infrastructure/adapters';
 import { ExecuteSendWelcomeEmailService } from './core/application/services/execute-send-welcome-email.service';

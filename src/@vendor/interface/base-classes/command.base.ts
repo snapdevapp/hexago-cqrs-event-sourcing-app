@@ -13,6 +13,7 @@ export class Command {
     if (Guard.isEmpty(props)) {
       throw new ArgumentNotProvidedException('Command props should not be empty');
     }
+
     this.correlationId = props.correlationId || nanoid(8);
   }
 }
