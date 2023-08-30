@@ -2,7 +2,7 @@ import { Result } from '@badrap/result';
 import { ApplicationServiceInput, ApplicationServicePort } from '@vendor/application/application.service';
 import { LoggerPort } from '@vendor/domain/ports';
 import { ID } from '@vendor/domain/value-objects/id.value-object';
-import { IEventBus } from '@nestjs/cqrs';
+import { IEventBus } from '@vendor/application/application.event';
 import { ClientEntity } from '../../domain/entities/client.entity';
 import { ClientRepositoryPort, UnitOfWorkPort } from '../ports';
 

@@ -26,6 +26,7 @@ import OnboardingModule from './onboarding/onboarding.module';
       },
     }),
     OnboardingModule,
+    LoggerModule,
   ],
 })
 export class AppModule {}
