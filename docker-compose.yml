@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: hexa_cqrs_event_sourcing_postgres-container
+    image: postgres:alpine
+    ports:
+      - '${FORWARD_POSTGRES_PORT:-5432}:5432'
+    environment:
+      POSTGRES_DB: '${DATABASE_NAME:-postgres}'
+      POSTGRES_USER: '${DATABASE_USERNAME:-user}'
+      POSTGRES_PASSWORD: '${DATABASE_PASSWORD:-password}'
+    volumes:
+      - 'hexa_cqrs_event_sourcing_postgres:/var/lib/postgresql/data'
+    networks:
+      - hexa_cqrs_event_sourcing
+
+  pgadmin:
+    container_name: hexa_cqrs_event_sourcing_pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_DEFAULT_EMAIL:-admin@email.com}'
+      PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD:-admin}'
+    ports:
+      - '${FORWARD_PG_ADMIN_PORT:-5050}:80'
+    networks:
+      - hexa_cqrs_event_sourcing
+
+  redis:
+    container_name: hexa_cqrs_event_sourcing_redis_container
+    image: redis:alpine
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'hexa_cqrs_event_sourcing_redis:/data'
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+    networks:
+      - hexa_cqrs_event_sourcing
+
+  rabbitmq:
+    container_name: 'hexa_cqrs_event_sourcing_rabbitmq_container'
+    image: rabbitmq:3-management-alpine
+    ports:
+      - '${FORWARD_RABBITMQ_PORT:-5672}:5672'
+      - '${FORWARD_WEB_RABBITMQ_PORT:-15672}:15672'
+    volumes:
+      - 'hexa_cqrs_event_sourcing_rabbitmq:/var'
+    networks:
+      - hexa_cqrs_event_sourcing
+
+networks:
+  hexa_cqrs_event_sourcing:
+    driver: bridge
+
+volumes:
+  hexa_cqrs_event_sourcing_postgres:
+    driver: local
+  hexa_cqrs_event_sourcing_redis:
+    driver: local
+  hexa_cqrs_event_sourcing_rabbitmq:
+    driver: local

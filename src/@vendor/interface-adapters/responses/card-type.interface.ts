@@ -1,0 +1,31 @@
+export interface ICardTypePricing {
+  monthlyMaintenanceFee?: number;
+  cardIssuance?: number;
+  cardActivationIssuance?: number;
+  pinReset?: number;
+  cardToCardTransfer?: number;
+  bankAtm?: number;
+  domesticAtm?: number;
+  internationalAtm?: number;
+  cardLoad?: number;
+  billPay?: number;
+  atmInquiries?: number;
+  bankAtmDeclined?: number;
+  domesticAtmDeclined?: number;
+  internationalAtmDeclined?: number;
+  bankPos?: number;
+  domesticPos?: number;
+  internationalPos?: number;
+  bankPosDeclined?: number;
+  domesticPosDeclined?: number;
+  internationalPosDeclined?: number;
+  posCashAdvance?: number;
+  posCashAdvanceDomestic?: number;
+  posCashAdvanceInternational?: number;
+  balanceInquiry?: number;
+  fundTransferToExternalAccount?: number;
+  cardLoadToExternalAccount?: number;
+  smsInquiry?: number;
+  smsStatement?: number;
+  vbvFees?: number;
+}

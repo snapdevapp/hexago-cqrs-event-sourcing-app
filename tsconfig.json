@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "lib": [ "ES2021.Promise" ],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": true,
+    "paths": {
+      "@modules/*": ["src/modules/*"],
+      "@vendor/*": ["src/@vendor/*"],
+      "@src/*": ["src/*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./@types"]
+  }
+}
