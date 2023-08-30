@@ -1,11 +1,11 @@
-/*  Most of repositories will probably need generic 
-    save/find/delete operations, so it's easier
-    to have some shared interfaces.
-    More specific interfaces should be defined
-    in a respective module/use case.
-*/
-
-import { BaseEntityProps } from '../base-classes/entity.base';
+/**
+ * Most of repositories will probably need generic
+ * save/find/delete operations, so it's easier
+ * to have some shared interfaces.
+ * More specific interfaces should be defined
+ * in a respective module/use case.
+ */
+import { BaseEntityProps } from '../entity.base';
 import { DeepPartial } from '../types';
 import { ID } from '../value-objects/id.value-object';
 
@@ -24,14 +24,14 @@ export interface FindOne<Entity, EntityProps> {
 }
 
 export interface FindOneById<Entity> {
-  findOneByIdOrThrow(id: ID | string): Promise<Entity>;
+  findOneByIdOrThrow(id: ID | unknown): Promise<Entity>;
 }
 
 export interface FindMany<Entity, EntityProps> {
   findMany(params: QueryParams<EntityProps>): Promise<Entity[]>;
 }
 
-export type FindOptionsOrderValue =
+export type OrderValue =
   | 'ASC'
   | 'DESC'
   | 'asc'
@@ -43,8 +43,17 @@ export type FindOptionsOrderValue =
       nulls?: 'first' | 'last' | 'FIRST' | 'LAST';
     };
 
-export type OrderBy<Entity> = {
-  [P in keyof Entity]?: Partial<Entity>;
+export type OrderByCondition = {
+  [columnName: string]:
+    | ('ASC' | 'DESC')
+    | {
+        order: 'ASC' | 'DESC';
+        nulls?: 'NULLS FIRST' | 'NULLS LAST';
+      };
+};
+
+export type OrderBy = {
+  [key: number]: OrderValue | OrderByCondition;
 };
 
 export interface PaginationMeta {
@@ -56,7 +65,8 @@ export interface PaginationMeta {
 export interface FindManyPaginatedParams<EntityProps> {
   params?: QueryParams<EntityProps>;
   pagination?: PaginationMeta;
-  orderBy?: OrderBy<EntityProps>;
+  orderBy?: OrderBy;
+  orderDirection?: OrderByCondition;
 }
 
 export interface DataWithPaginationMeta<T> {

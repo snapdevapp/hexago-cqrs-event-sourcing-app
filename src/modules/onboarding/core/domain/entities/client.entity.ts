@@ -1,4 +1,4 @@
-import { AggregateRoot } from '@vendor/domain/base-classes/aggregate-root.base';
+import { AggregateRoot } from '@vendor/domain/aggregate-root.base';
 import { ArgumentNotProvidedException } from '@vendor/domain/exception';
 import { UUID } from '@vendor/domain/value-objects/uuid.value-object';
 

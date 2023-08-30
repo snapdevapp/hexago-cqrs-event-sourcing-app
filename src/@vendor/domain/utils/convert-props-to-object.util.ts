@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types */
-import { Entity } from '../base-classes/entity.base';
-import { ValueObject } from '../base-classes/value-object.base';
+import { Entity } from '../entity.base';
+import { ValueObject } from '../value-object.base';
 
 function isEntity(obj: unknown): obj is Entity<unknown> {
   /**

@@ -1,5 +1,5 @@
 import { final } from '@vendor/decorators/final.decorator';
-import { AggregateRoot } from '../base-classes/aggregate-root.base';
+import { AggregateRoot } from '../aggregate-root.base';
 import { LoggerPort } from '../ports/logger.port';
 import { DomainEvent, DomainEventHandler } from '.';
 import { ID } from '../value-objects/id.value-object';

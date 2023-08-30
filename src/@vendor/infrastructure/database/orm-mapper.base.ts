@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AggregateRoot } from '@vendor/domain/base-classes/aggregate-root.base';
-import { CreateEntityProps } from '@vendor/domain/base-classes/entity.base';
+import { AggregateRoot } from '@vendor/domain/aggregate-root.base';
+import { CreateEntityProps } from '@vendor/domain/entity.base';
 import { ID } from '@vendor/domain/value-objects/id.value-object';
 import { TypeormEntityBase } from './typeorm.entity.base';
 

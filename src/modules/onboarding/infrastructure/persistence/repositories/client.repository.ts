@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TypeormRepositoryBase, WhereCondition } from '@vendor/infrastructure/database/typeorm.repository.base';
+import { TypeormRepositoryBase } from '@vendor/infrastructure/database/typeorm.repository.base';
 import { ClientEntity, ClientProps } from '@modules/onboarding/core/domain/entities';
 import { ClientOrmEntity } from '@modules/onboarding/infrastructure/persistence/orm-entities';
 import { ClientOrmMapper } from '@modules/onboarding/infrastructure/persistence/orm-mappers';
 import { ClientRepositoryPort } from '@modules/onboarding/core/application/ports';
 import { QueryParams } from '@vendor/domain/ports/repository.port';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { NotFoundException } from '@vendor/domain/exception';
 import { LoggerAdapter } from '@vendor/infrastructure/adapters';
 
@@ -38,8 +38,10 @@ export class ClientRepository
     throw new NotFoundException(`The client ${clientId} is not found`);
   }
 
-  protected prepareQuery(params: QueryParams<ClientProps>): WhereCondition<ClientOrmEntity> {
-    const where: QueryParams<ClientOrmEntity> = {};
+  protected prepareQuery(
+    params: QueryParams<ClientProps>,
+  ): FindOptionsWhere<ClientOrmEntity>[] | FindOptionsWhere<ClientOrmEntity> {
+    const where: FindOptionsWhere<ClientOrmEntity> = {};
 
     if (params.id) {
       where.id = params.id.value;

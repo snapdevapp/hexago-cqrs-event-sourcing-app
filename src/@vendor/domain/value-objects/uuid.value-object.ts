@@ -1,5 +1,5 @@
 import { v4 as uuidV4, validate } from 'uuid';
-import { DomainPrimitive } from '../base-classes/value-object.base';
+import { DomainPrimitive } from '../value-object.base';
 import { ArgumentInvalidException } from '../exception/argument-invalid.exception';
 import { ID } from './id.value-object';
 

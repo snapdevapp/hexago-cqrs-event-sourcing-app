@@ -1,5 +1,5 @@
-import { FindConditions, ObjectLiteral, Repository } from 'typeorm';
-import { AggregateRoot } from '@vendor/domain/base-classes/aggregate-root.base';
+import { FindOptionsWhere, ObjectLiteral, Repository } from 'typeorm';
+import { AggregateRoot } from '@vendor/domain/aggregate-root.base';
 import { DomainEvents } from '@vendor/domain/domain-events';
 import { ID } from '@vendor/domain/value-objects/id.value-object';
 import { NotFoundException } from '@vendor/domain/exception';
@@ -11,12 +11,13 @@ import {
 } from '@vendor/domain/ports/repository.port';
 import { LoggerPort } from '@vendor/domain/ports/logger.port';
 import { OrmMapper } from './orm-mapper.base';
+import { DeepPartial } from '@vendor/domain/types';
 
 export type WhereCondition<OrmEntity> =
-  | FindConditions<OrmEntity>[]
-  | FindConditions<OrmEntity>
-  | ObjectLiteral
-  | string;
+  | FindOptionsWhere<OrmEntity>[]
+  | FindOptionsWhere<OrmEntity>
+  | DeepPartial<ID & string>
+  | ObjectLiteral;
 
 export abstract class TypeormRepositoryBase<Entity extends AggregateRoot<unknown>, EntityProps, OrmEntity>
   implements RepositoryPort<Entity, EntityProps>
@@ -40,7 +41,9 @@ export abstract class TypeormRepositoryBase<Entity extends AggregateRoot<unknown
 
   protected tableName = this.repository.metadata.tableName;
 
-  protected abstract prepareQuery(params: QueryParams<EntityProps>): WhereCondition<OrmEntity>;
+  protected abstract prepareQuery(
+    params: QueryParams<EntityProps>,
+  ): FindOptionsWhere<OrmEntity>[] | FindOptionsWhere<OrmEntity>;
 
   async save(entity: Entity): Promise<Entity> {
     entity.validate(); // Protecting invariant before saving
@@ -81,13 +84,17 @@ export abstract class TypeormRepositoryBase<Entity extends AggregateRoot<unknown
   }
 
   async findOneByIdOrThrow(id: ID | string): Promise<Entity> {
-    const found = await this.repository.findOne({
-      where: { id: id instanceof ID ? id.value : id },
-    });
-    if (!found) {
+    const result = await this.repository
+      .createQueryBuilder()
+      .where({
+        where: { id: id instanceof ID ? id.value : id },
+      })
+      .getOne();
+
+    if (!result) {
       throw new NotFoundException();
     }
-    return this.mapper.toDomainEntity(found);
+    return this.mapper.toDomainEntity(result);
   }
 
   async findMany(params: QueryParams<EntityProps> = {}): Promise<Entity[]> {
@@ -103,15 +110,15 @@ export abstract class TypeormRepositoryBase<Entity extends AggregateRoot<unknown
   async findManyPaginated({
     params = {},
     pagination,
-    orderBy,
+    orderDirection,
   }: FindManyPaginatedParams<EntityProps>): Promise<DataWithPaginationMeta<Entity[]>> {
-    const [data, count] = await this.repository.findAndCount({
-      skip: pagination?.skip,
-      take: pagination?.limit,
-      where: this.prepareQuery(params),
-      order: orderBy,
-      relations: this.relations,
-    });
+    const [data, count] = await this.repository
+      .createQueryBuilder()
+      .skip(pagination?.skip)
+      .take(pagination?.limit)
+      .orderBy(orderDirection)
+      .where(this.prepareQuery(params))
+      .getManyAndCount();
 
     const result: DataWithPaginationMeta<Entity[]> = {
       data: data.map(item => this.mapper.toDomainEntity(item)),
