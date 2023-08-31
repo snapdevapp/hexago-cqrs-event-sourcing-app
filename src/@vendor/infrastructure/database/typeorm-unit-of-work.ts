@@ -1,7 +1,8 @@
 import { LoggerPort } from '@vendor/domain/ports/logger.port';
 import { BaseUnitOfWorkPort, UnitOfWorkOptions } from '@vendor/domain/ports/base-unit-of-work.port';
 import { Result } from '@vendor/domain/utils/result.util';
-import { EntityTarget, getConnection, QueryRunner, Repository } from 'typeorm';
+import { DataSource, EntityTarget, QueryRunner, Repository } from 'typeorm';
+import { dataSource } from './../config/config.service';
 
 /**
  * Keep in mind that this is a naive implementation
@@ -16,9 +17,11 @@ import { EntityTarget, getConnection, QueryRunner, Repository } from 'typeorm';
  * https://mikro-orm.io/docs/unit-of-work/.
  */
 export class TypeormUnitOfWork implements BaseUnitOfWorkPort {
-  constructor(private readonly logger: LoggerPort) {}
+  protected readonly dataSource: DataSource = dataSource;
 
   private queryRunners: Map<string, QueryRunner> = new Map();
+
+  constructor(private readonly logger: LoggerPort) {}
 
   getQueryRunner(correlationId: string): QueryRunner {
     const queryRunner = this.queryRunners.get(correlationId);
@@ -53,14 +56,13 @@ export class TypeormUnitOfWork implements BaseUnitOfWorkPort {
     this.logger.setContext(`${this.constructor.name}:${correlationId}`);
     let queryRunner;
     if (options?.replicationMode) {
-      queryRunner = getConnection().createQueryRunner(options.replicationMode);
+      queryRunner = this.dataSource.createQueryRunner(options.replicationMode);
     } else {
-      queryRunner = getConnection().createQueryRunner();
+      queryRunner = this.dataSource.createQueryRunner();
     }
     this.queryRunners.set(correlationId, queryRunner);
-    this.logger.debug(`[Starting transaction`);
+    this.logger.debug(`[query transaction starting]`);
     await queryRunner.startTransaction(options?.isolationLevel);
-    // const queryRunner = this.getQueryRunner(correlationId);
     let result: T | Result<T>;
     try {
       result = await callback();
@@ -80,9 +82,7 @@ export class TypeormUnitOfWork implements BaseUnitOfWorkPort {
     } finally {
       await this.finish(correlationId);
     }
-
     this.logger.debug(`[Transaction committed]`);
-
     return result;
   }
 

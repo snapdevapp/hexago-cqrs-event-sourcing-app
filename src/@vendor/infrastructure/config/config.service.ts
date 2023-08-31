@@ -4,6 +4,7 @@ import * as Joi from 'joi';
 import path from 'path';
 import dotenv, { DotenvParseOutput } from 'dotenv';
 import * as fs from 'fs';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
 dotenv.config();
 
@@ -177,3 +178,5 @@ export class ConfigService {
     return Number(this.envConfig[key]);
   }
 }
+
+export const dataSource = new DataSource(new ConfigService().typeOrmConfig as DataSourceOptions);
