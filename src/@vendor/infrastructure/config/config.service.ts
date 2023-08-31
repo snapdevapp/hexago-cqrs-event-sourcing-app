@@ -97,7 +97,7 @@ export class ConfigService {
       autoLoadEntities: true,
       logging: this.nodeEnv === 'development' ? 'all' : ['error', 'migration', 'schema'],
       entities,
-      migrations: [`${__dirname}/../../../@database/migrations/**`],
+      migrations: [`${__dirname}/../../../database/migrations/**`],
       migrationsTableName: 'migrations',
     };
   }
