@@ -3,15 +3,19 @@ import { TypeormEntityBase } from '@vendor/infrastructure/database/typeorm.entit
 
 @Entity('client')
 export class ClientOrmEntity extends TypeormEntityBase {
-  /**
-   * Client entity constructor.
-   *
-   * @param init
-   */
   public constructor(init?: Partial<ClientOrmEntity>) {
     super();
     Object.assign(this, init);
   }
+
+  @Column({ name: 'firtname', type: 'varchar' })
+  firtName: string;
+
+  @Column({ name: 'lastname', type: 'varchar' })
+  lastName: string;
+
+  @Column({ name: 'email', type: 'varchar', unique: true })
+  email: string;
 }
 
 export type ClientView = {
@@ -20,5 +24,4 @@ export type ClientView = {
   lastName: string;
   firstName: string;
   email: string;
-  monthlyIncome: string;
 };
