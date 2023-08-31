@@ -1,4 +1,4 @@
-import { ENV, EnvParser } from '@src/env-parser';
+import { EnvParser } from '@src/env-parser';
 import { RmqOptions, Transport } from '@nestjs/microservices';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as Joi from 'joi';
@@ -33,10 +33,11 @@ export class ConfigService {
    */
   private static validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
-      NODE_ENV: Joi.string().valid([ENV.DEVELOPMENT, ENV.STAGING, ENV.PRODUCTION, ENV.TEST]).default(ENV.DEVELOPMENT),
       PORT: Joi.number().default(3000),
       APP_NAME: Joi.string().required(),
-      APP_URL: Joi.string().required().uri(),
+      APP_URL: Joi.string()
+        .required()
+        .uri({ scheme: ['http', 'https'] }),
       DATABASE_NAME: Joi.string().required(),
       DATABASE_PASSWORD: Joi.optional().default(''),
       DATABASE_USERNAME: Joi.string().required(),
@@ -61,42 +62,37 @@ export class ConfigService {
       type: 'postgres',
       replication: {
         master: {
-          host: this.getDatabaseHost,
-          username: this.getDatabaseUserName,
-          password: this.getDatabasePassword,
-          database: this.getDatabaseName,
-          port: this.getDatabasePort,
+          host: this.databaseHost,
+          username: this.databaseUserName,
+          password: this.databasePassword,
+          database: this.databaseName,
+          port: this.databasePort,
         },
         slaves: [
           {
-            host: this.getReadDatabaseHost,
-            username: this.getReadDatabaseUserName,
-            password: this.getReadDatabasePassword,
-            database: this.getDatabaseName,
-            port: this.getDatabasePort,
+            host: this.readDatabaseHost,
+            username: this.readDatabaseUserName,
+            password: this.readDatabasePassword,
+            database: this.databaseName,
+            port: this.databasePort,
           },
         ],
       },
-      synchronize: false,
-      migrationsRun: false,
+      migrationsTransactionMode: 'all',
+      synchronize: true,
+      migrationsRun: true,
       autoLoadEntities: true,
-      logging: this.nodeEnv === ENV.DEVELOPMENT ? 'all' : ['error', 'migration', 'schema'],
-      // logging: ['error', 'migration', 'schema'],
+      logging: this.nodeEnv === 'development' ? 'all' : ['error', 'migration', 'schema'],
       entities,
-      // migrations,
+      migrations: [`${__dirname}/../database/migrations/*.ts`],
+      migrationsTableName: 'migrations',
     };
   }
 
-  /**
-   * Base url.
-   */
   get baseUrl(): string | undefined {
     return this.envConfig.BASE_URL;
   }
 
-  /**
-   * Get Rabbit MQ URL.
-   */
   get rabbitMQURL(): string {
     return this.envConfig.RABBIT_MQ_URL;
   }
@@ -105,43 +101,39 @@ export class ConfigService {
     return process.env.NODE_ENV;
   }
 
-  get getDatabaseName(): string {
-    return '';
+  get databaseName(): string {
+    return this.envConfig.DATABASE_NAME;
   }
 
-  get getDatabaseHost(): string {
-    return '';
+  get databaseHost(): string {
+    return this.envConfig.DATABASE_HOST;
   }
 
-  get getDatabaseUserName(): string {
-    return '';
+  get databaseUserName(): string {
+    return this.envConfig.DATABASE_USERNAME;
   }
 
-  get getDatabasePassword(): string {
-    return '';
+  get databasePassword(): string {
+    return this.envConfig.DATABASE_PASSWORD;
   }
 
-  get getReadDatabaseHost(): string {
-    return '';
+  get readDatabaseHost(): string {
+    return this.envConfig.DATABASE_HOST;
   }
 
-  get getReadDatabaseUserName(): string {
-    return '';
+  get readDatabaseUserName(): string {
+    return this.envConfig.DATABASE_USERNAME;
   }
 
-  get getReadDatabasePassword(): string {
-    return '';
+  get readDatabasePassword(): string {
+    return this.envConfig.DATABASE_PASSWORD;
   }
 
-  get getDatabasePort(): number {
-    return 2000;
+  get databasePort(): number {
+    return parseInt(this.envConfig.DATABASE_PORT);
   }
 
-  /**
-   * Get banking rabbitmq service.
-   * @return RmqOptions
-   */
-  getMicroserviceClientOptions(): RmqOptions {
+  get getMicroserviceClientOptions(): RmqOptions {
     return {
       transport: Transport.RMQ,
       options: {

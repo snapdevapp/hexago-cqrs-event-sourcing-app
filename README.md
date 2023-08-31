@@ -1,3 +1,3 @@
-## hexago-cqrs-event-sourcing-boilerplate
+## hexago-cqrs-event-sourcing-app
 
-hexago-cqrs-event-sourcing-boilerplate
+hexago-cqrs-event-sourcing-app

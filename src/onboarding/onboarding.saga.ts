@@ -6,7 +6,7 @@ import { IEvent } from '@vendor/application/application.event';
 import { SentryInterceptor } from '@vendor/interface/interceptors/sentry.interceptor';
 import { ClientCreated } from './core/application/events/client-created.event';
 import { OnboardingSagaPort } from './core/application/ports/onboarding.saga.port';
-import { ExecuteSendWelcomeEmail } from './interface/commands/execute-send-welcome-email.command';
+import { ExecuteSendWelcomeEmailCommand } from './interface/commands/execute-send-welcome-email.command';
 
 @UseInterceptors(SentryInterceptor)
 export class OnboardingSaga implements OnboardingSagaPort<Observable<IEvent>, Observable<ICommand>> {
@@ -16,7 +16,7 @@ export class OnboardingSaga implements OnboardingSagaPort<Observable<IEvent>, Ob
       ofType(ClientCreated),
       delay(200),
       map(event => {
-        return new ExecuteSendWelcomeEmail({
+        return new ExecuteSendWelcomeEmailCommand({
           ...event,
         });
       }),

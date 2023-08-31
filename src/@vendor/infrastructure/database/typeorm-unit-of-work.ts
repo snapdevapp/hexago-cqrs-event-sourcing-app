@@ -65,11 +65,11 @@ export class TypeormUnitOfWork implements BaseUnitOfWorkPort {
     try {
       result = await callback();
       if ((result as unknown as Result<T>)?.isErr) {
-        await this.rollbackTransaction<T>(correlationId, (result as unknown as Result.Err<T, Error>).error);
+        await this.rollbackTransaction(correlationId, (result as unknown as Result.Err<T, Error>).error);
         return result;
       }
     } catch (error) {
-      await this.rollbackTransaction<T>(correlationId, error as Error);
+      await this.rollbackTransaction(correlationId, error as Error);
       if (afterRollback !== undefined) {
         await afterRollback();
       }
@@ -86,7 +86,7 @@ export class TypeormUnitOfWork implements BaseUnitOfWorkPort {
     return result;
   }
 
-  private async rollbackTransaction<T>(correlationId: string, error: Error) {
+  private async rollbackTransaction(correlationId: string, error: Error) {
     const queryRunner = this.getQueryRunner(correlationId);
     try {
       await queryRunner.rollbackTransaction();
