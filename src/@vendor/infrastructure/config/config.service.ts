@@ -2,6 +2,7 @@ import { EnvParser } from '@src/env-parser';
 import { RmqOptions, Transport } from '@nestjs/microservices';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as Joi from 'joi';
+import path from 'path';
 
 /**
  * Env config interface.
@@ -57,7 +58,7 @@ export class ConfigService {
    * Type ORM configuration.
    */
   get typeOrmConfig(): TypeOrmModuleOptions {
-    const entities = [`${__dirname}/../../**/*.orm-entity.ts`];
+    const entities = [path.resolve(`${__dirname}/../../../**/*.orm-entity.ts`)];
     return {
       type: 'postgres',
       replication: {
@@ -84,7 +85,7 @@ export class ConfigService {
       autoLoadEntities: true,
       logging: this.nodeEnv === 'development' ? 'all' : ['error', 'migration', 'schema'],
       entities,
-      migrations: [`${__dirname}/../database/migrations/*.ts`],
+      migrations: [path.resolve(`${__dirname}/../../../@database/migrations/*.ts`)],
       migrationsTableName: 'migrations',
     };
   }

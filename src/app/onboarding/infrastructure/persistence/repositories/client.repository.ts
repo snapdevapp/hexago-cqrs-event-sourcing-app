@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeormRepositoryBase } from '@vendor/infrastructure/database/typeorm.repository.base';
-import { ClientEntity, ClientProps } from '@src/onboarding/core/domain/entities';
-import { ClientOrmEntity } from '@src/onboarding/infrastructure/persistence/orm-entities';
-import { ClientOrmMapper } from '@src/onboarding/infrastructure/persistence/orm-mappers';
-import { ClientRepositoryPort } from '@src/onboarding/core/application/ports';
+import { ClientEntity, ClientProps } from '@src/app/onboarding/core/domain/entities';
+import { ClientOrmEntity } from '@src/app/onboarding/infrastructure/persistence/orm-entities';
+import { ClientOrmMapper } from '@src/app/onboarding/infrastructure/persistence/orm-mappers';
+import { ClientRepositoryPort } from '@src/app/onboarding/core/application/ports';
 import { QueryParams } from '@vendor/domain/ports/repository.port';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { NotFoundException } from '@vendor/domain/exception';

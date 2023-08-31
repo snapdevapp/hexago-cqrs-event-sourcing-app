@@ -1,6 +1,6 @@
 import { Result } from '@badrap/result';
 import { CommandHandler } from '@nestjs/cqrs';
-import { UnitOfWorkPort } from '@onboarding/core/application/ports';
+import { UnitOfWorkPort } from '@src/app/onboarding/core/application/ports';
 import { ApplicationServicePort } from '@vendor/application/application.service';
 import { ID } from '@vendor/domain/value-objects/id.value-object';
 import { CommandHandlerBase } from '@vendor/interface/base-classes/command-handler.base';

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
-import OnboardingModule from './onboarding/onboarding.module';
+import OnboardingModule from './app/onboarding/onboarding.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@vendor/infrastructure/config/config.module';
 import { ConfigService } from '@vendor/infrastructure/config';
@@ -9,7 +9,10 @@ import { ConfigService } from '@vendor/infrastructure/config';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => configService.typeOrmConfig,
+      useFactory: async (configService: ConfigService) => {
+        console.log(configService.typeOrmConfig);
+        return configService.typeOrmConfig;
+      },
       inject: [ConfigService],
     }),
     LoggerModule.forRoot({

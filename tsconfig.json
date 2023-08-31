@@ -20,9 +20,10 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "paths": {
-      "@onboarding/*": ["src/onboarding/*"],
+      "@onboarding/*": ["src/app/onboarding/*"],
       "@vendor/*": ["src/@vendor/*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@tests/*": ["tests/*"]
     },
     "typeRoots": ["./node_modules/@types", "./@types"]
   }
