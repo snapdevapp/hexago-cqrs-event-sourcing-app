@@ -65,7 +65,11 @@ export class ClientEntity extends AggregateRoot<ClientProps> {
     return this.props.gender;
   }
 
-  static rehydrateDromIdAndProps(id: string, props: ClientProps): ClientEntity {
+  static rehydrateIdAndProps(id: string, props: ClientProps): ClientEntity {
     return new ClientEntity({ id: new UUID(id), props });
+  }
+
+  static create(props: ClientProps): ClientEntity {
+    return new ClientEntity({ id: UUID.generate(), props });
   }
 }

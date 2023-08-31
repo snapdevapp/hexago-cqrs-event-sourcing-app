@@ -5,10 +5,15 @@ import { ID } from '@vendor/domain/value-objects/id.value-object';
 import { IEventBus } from '@nestjs/cqrs';
 import { ClientEntity } from '../../domain/entities/client.entity';
 import { ClientRepositoryPort, UnitOfWorkPort } from '../ports';
+import { ClientCreated } from '../events/client-created.event';
 
 export interface ExecuteSendWelcomeEmailInput extends ApplicationServiceInput {
   readonly correlationId: string;
-  readonly clientId: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
+  readonly password: string;
+  readonly number: string;
 }
 
 export class ExecuteSendWelcomeEmailService extends ApplicationServicePort<ID, Error> {
@@ -27,13 +32,14 @@ export class ExecuteSendWelcomeEmailService extends ApplicationServicePort<ID, E
   }
 
   async run(input: ExecuteSendWelcomeEmailInput): Promise<Result<ID, Error>> {
-    const { correlationId, clientId } = input;
+    const { correlationId, firstName, lastName, email } = input;
 
     const clientRepository: ClientRepositoryPort = this.unitOfWork.getClientRepository(correlationId);
+    const client: ClientEntity = ClientEntity.create({ firstName, lastName, email });
 
-    const client: ClientEntity = await clientRepository.findClient(clientId);
+    clientRepository.save(client);
 
-    // Send email action ici
+    this.eventBus.publish(new ClientCreated({ clientId: client.id.value }));
 
     return Result.ok(client.id);
   }

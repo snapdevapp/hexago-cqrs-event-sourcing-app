@@ -9,9 +9,9 @@ export abstract class CommandHandlerBase<
   constructor(protected readonly unitOfWork: BaseUnitOfWorkPort) {}
 
   // Forces all command handlers to implement a handle method
-  abstract handle(command: Command): Promise<Result<CommandHandlerReturnType, CommandHandlerError>>;
+  abstract process(command: Command): Promise<Result<CommandHandlerReturnType, CommandHandlerError>>;
 
   execute(command: Command): Promise<Result<CommandHandlerReturnType, CommandHandlerError>> {
-    return this.handle(command);
+    return this.process(command);
   }
 }

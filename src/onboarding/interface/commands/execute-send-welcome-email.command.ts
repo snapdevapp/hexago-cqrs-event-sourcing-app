@@ -20,7 +20,7 @@ export class ExecuteSendWelcomeEmailHanlder extends CommandHandlerBase<ID, Error
     super(unitOfWork);
   }
 
-  handle(command: ExecuteSendWelcomeEmailCommand): Promise<Result<ID, Error>> {
+  process(command: ExecuteSendWelcomeEmailCommand): Promise<Result<ID, Error>> {
     return this.applicationService.run(command);
   }
 }

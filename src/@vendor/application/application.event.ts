@@ -11,14 +11,14 @@ export interface IEventBus<EventBase extends IEvent = IEvent> {
 }
 
 export type ApplicationEventProps<T> = Omit<T, 'dateOccurred'> &
-  Omit<ApplicationEvent, 'dateOccurred'> & {
+  Omit<ApplicationEvent<T>, 'dateOccurred'> & {
     dateOccurred?: number;
   };
 
-export abstract class ApplicationEvent implements IEvent {
+export abstract class ApplicationEvent<T> implements IEvent {
   public readonly dateOccurred: number;
 
-  constructor(props: ApplicationEventProps<unknown>) {
+  constructor(props: ApplicationEventProps<T>) {
     if (Guard.isEmpty(props)) {
       throw new ArgumentNotProvidedException('ApplicationEvent props should not be empty');
     }
