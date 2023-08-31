@@ -14,7 +14,7 @@ export async function getMigrator() {
 
   const migrator = new SlonikMigrator({
     migrationsPath: path.resolve(__dirname, 'migrations'),
-    migrationTableName: 'migration',
+    migrationTableName: 'migrations',
     slonik: pool,
   } as any);
 

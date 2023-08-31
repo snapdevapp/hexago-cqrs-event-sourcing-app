@@ -11,6 +11,7 @@ export class CreateClientsTable1693451104240 implements MigrationInterface {
           new TableColumn({ name: 'email', type: 'varchar', isNullable: false, isUnique: true }),
           new TableColumn({ name: 'firstname', type: 'varchar', isNullable: false }),
           new TableColumn({ name: 'lastname', type: 'varchar', isNullable: false }),
+          new TableColumn({ name: 'gender', type: 'varchar', isNullable: false }),
         ],
       }),
     );
