@@ -8,14 +8,17 @@ export class ClientOrmEntity extends TypeormEntityBase {
     Object.assign(this, init);
   }
 
-  @Column({ name: 'firtname', type: 'varchar' })
-  firtName: string;
+  @Column({ name: 'firstname' })
+  firstName: string;
 
-  @Column({ name: 'lastname', type: 'varchar' })
+  @Column({ name: 'lastname' })
   lastName: string;
 
-  @Column({ name: 'email', type: 'varchar', unique: true })
+  @Column({ unique: true })
   email: string;
+
+  @Column()
+  gender: string;
 }
 
 export type ClientView = {
@@ -24,4 +27,5 @@ export type ClientView = {
   lastName: string;
   firstName: string;
   email: string;
+  gender: string;
 };

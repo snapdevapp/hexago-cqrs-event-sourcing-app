@@ -20,7 +20,7 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "paths": {
-      "@onboarding/*": ["src/app/onboarding/*"],
+      "@app/*": ["src/app/*"],
       "@vendor/*": ["src/@vendor/*"],
       "@src/*": ["src/*"],
       "@tests/*": ["tests/*"]

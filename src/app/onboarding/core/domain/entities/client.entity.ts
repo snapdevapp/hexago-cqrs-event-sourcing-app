@@ -3,16 +3,10 @@ import { ArgumentNotProvidedException } from '@vendor/domain/exception';
 import { UUID } from '@vendor/domain/value-objects/uuid.value-object';
 
 export interface ClientProps {
-  email?: string;
+  isActive?: boolean;
   firstName?: string;
   lastName?: string;
-  pushToken?: string;
-  dateOfBirth?: Date;
-  countryIsoCode?: string;
-  photoUrl?: string;
-  kycStatus?: string;
-  monthlyIncome?: string;
-  activity?: string;
+  email?: string;
   gender?: string;
 }
 
@@ -25,10 +19,6 @@ export class ClientEntity extends AggregateRoot<ClientProps> {
     }
   }
 
-  get kycStatus(): string {
-    return this.props.kycStatus;
-  }
-
   get firstName(): string {
     return this.props.firstName;
   }
@@ -37,28 +27,8 @@ export class ClientEntity extends AggregateRoot<ClientProps> {
     return this.props.lastName;
   }
 
-  get pushToken(): string {
-    return this.props.pushToken;
-  }
-
-  get photoUrl(): string {
-    return this.props.photoUrl;
-  }
-
-  get dateOfBirth(): Date {
-    return this.props.dateOfBirth;
-  }
-
-  get countryIsoCode(): string {
-    return this.props.countryIsoCode;
-  }
-
-  get activity(): string {
-    return this.props.activity;
-  }
-
-  get monthlyIncome(): string {
-    return this.props.monthlyIncome;
+  get email(): string {
+    return this.props.email;
   }
 
   get gender(): string {

@@ -6,7 +6,12 @@ import { ClientOrmEntity } from '@src/app/onboarding/infrastructure/persistence/
 export class ClientOrmMapper extends OrmMapper<ClientEntity, ClientOrmEntity> {
   protected toDomainProps(ormEntity: ClientOrmEntity): EntityProps<unknown> {
     const id = new UUID(ormEntity.id);
-    const props: ClientProps = {};
+    const props: ClientProps = {
+      firstName: ormEntity.firstName,
+      lastName: ormEntity.lastName,
+      email: ormEntity.email,
+      gender: ormEntity.gender,
+    };
     return { id, props };
   }
 
