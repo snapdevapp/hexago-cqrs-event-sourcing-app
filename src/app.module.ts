@@ -4,13 +4,12 @@ import OnboardingModule from './app/onboarding/onboarding.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@vendor/infrastructure/config/config.module';
 import { ConfigService } from '@vendor/infrastructure/config';
-// ./src/@vendor/infrastructure/database/migrations
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        console.log(configService.typeOrmConfig);
         return configService.typeOrmConfig;
       },
       inject: [ConfigService],
@@ -33,7 +32,7 @@ import { ConfigService } from '@vendor/infrastructure/config';
                 },
               }
             : undefined,
-        level: 'info', // process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+        level: 'info',
       },
     }),
     OnboardingModule,

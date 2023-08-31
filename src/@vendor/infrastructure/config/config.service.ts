@@ -1,8 +1,20 @@
-import { EnvParser } from '@src/env-parser';
 import { RmqOptions, Transport } from '@nestjs/microservices';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import path from 'path';
+import dotenv, { DotenvParseOutput } from 'dotenv';
+import * as fs from 'fs';
+
+dotenv.config();
+
+export class EnvParser {
+  static parse(): DotenvParseOutput {
+    return {
+      ...process.env,
+      ...dotenv.parse(fs.readFileSync('.env')),
+    };
+  }
+}
 
 /**
  * Env config interface.
@@ -63,7 +75,7 @@ export class ConfigService {
       type: 'postgres',
       replication: {
         master: {
-          host: this.databaseHost,
+          host: this.envConfig.DATABASE_HOST,
           username: this.databaseUserName,
           password: this.databasePassword,
           database: this.databaseName,
@@ -85,7 +97,7 @@ export class ConfigService {
       autoLoadEntities: true,
       logging: this.nodeEnv === 'development' ? 'all' : ['error', 'migration', 'schema'],
       entities,
-      migrations: [path.resolve(`${__dirname}/../../../@database/migrations/*.ts`)],
+      migrations: [`${__dirname}/../../../@database/migrations/**`],
       migrationsTableName: 'migrations',
     };
   }
